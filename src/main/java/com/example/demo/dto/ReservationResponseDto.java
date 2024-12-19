@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Reservation;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -18,5 +19,14 @@ public class ReservationResponseDto {
         this.itemName = itemName;
         this.startAt = startAt;
         this.endAt = endAt;
+    }
+
+    // Reservation 객체를 받아서 DTO로 변환
+    public ReservationResponseDto(Reservation updatedReservation) {
+        this.id = updatedReservation.getId();
+        this.nickname = updatedReservation.getUser().getNickname();
+        this.itemName = updatedReservation.getItem().getName();
+        this.startAt = updatedReservation.getStartAt();
+        this.endAt = updatedReservation.getEndAt();
     }
 }

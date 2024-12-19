@@ -2,10 +2,12 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.DynamicInsert;
 
 
 @Entity
 @Getter
+@DynamicInsert
 // TODO: 6. Dynamic Insert
 public class Item {
     @Id
@@ -25,7 +27,7 @@ public class Item {
     private User manager;
 
     @Column(nullable = false, columnDefinition = "varchar(20) default 'PENDING'")
-    private String status;
+    private String status="PENDING";
 
     public Item(String name, String description, User manager, User owner) {
         this.name = name;
@@ -35,4 +37,9 @@ public class Item {
     }
 
     public Item() {}
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

@@ -1,8 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ReservationRequestDto;
+import com.example.demo.dto.ReservationResponseDto;
+import com.example.demo.entity.Reservation;
+import com.example.demo.model.ReservationStatus;
 import com.example.demo.service.ReservationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
@@ -22,18 +28,19 @@ public class ReservationController {
     }
 
     @PatchMapping("/{id}/update-status")
-    public void updateReservation(@PathVariable Long id, @RequestBody String status) {
-        reservationService.updateReservationStatus(id, status);
+    public ResponseEntity<ReservationResponseDto> updateReservation(@PathVariable Long id, @RequestParam ReservationStatus status) {
+        Reservation updatedReservation = reservationService.updateReservationStatus(id, status);
+        return ResponseEntity.ok(new ReservationResponseDto(updatedReservation));
     }
 
     @GetMapping
-    public void findAll() {
-        reservationService.getReservations();
+    public List<ReservationResponseDto> findAll() {
+        return  reservationService.getReservations();
     }
 
     @GetMapping("/search")
-    public void searchAll(@RequestParam(required = false) Long userId,
+    public List<ReservationResponseDto> searchAll(@RequestParam(required = false) Long userId,
                           @RequestParam(required = false) Long itemId) {
-        reservationService.searchAndConvertReservations(userId, itemId);
+       return reservationService.searchAndConvertReservations(userId, itemId);
     }
 }

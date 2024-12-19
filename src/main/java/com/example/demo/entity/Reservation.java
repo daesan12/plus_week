@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.model.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -25,19 +26,27 @@ public class Reservation {
 
     private LocalDateTime endAt;
 
-    private String status; // PENDING, APPROVED, CANCELED, EXPIRED
+//    private String status; // PENDING, APPROVED, CANCELED, EXPIRED
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReservationStatus status;
 
     public Reservation(Item item, User user, String status, LocalDateTime startAt, LocalDateTime endAt) {
         this.item = item;
         this.user = user;
-        this.status = status;
+        this.status = ReservationStatus.fromString(status);
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
     public Reservation() {}
 
-    public void updateStatus(String status) {
-        this.status = status;
+    public void updateStatus(ReservationStatus newStatus) {
+        if (!this.status.canTransitionTo(newStatus)) {
+            throw new IllegalArgumentException(
+                    String.format(" %s 상태는 %s 상태로 바꿀 수 없습니다.", this.status, newStatus)
+            );
+        }
+        this.status = newStatus;
     }
 }
