@@ -24,11 +24,9 @@ public class AdminService {
         if (users.size() != userIds.size()) {
             throw new IllegalArgumentException("잘못된 ID가 존재합니다.");
         }
-
         // 상태 변경
         users.forEach(User::updateStatusToBlocked);
-
         // 한 번의 쿼리로 모든 사용자 상태 저장
         userRepository.saveAll(users);
     }
-        }
+}

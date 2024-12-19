@@ -88,41 +88,12 @@ public class ReservationService {
                 .toList();
     }
 
-//    // TODO: 7. 리팩토링
-//    @Transactional
-//    public void updateReservationStatus(Long reservationId, String status) {
-//        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new IllegalArgumentException("해당 ID에 맞는 데이터가 존재하지 않습니다."));
-//
-//        if ("APPROVED".equals(status)) {
-//            if (!"PENDING".equals(reservation.getStatus())) {
-//                throw new IllegalArgumentException("PENDING 상태만 APPROVED로 변경 가능합니다.");
-//            }
-//            reservation.updateStatus("APPROVED");
-//        } else if ("CANCELED".equals(status)) {
-//            if ("EXPIRED".equals(reservation.getStatus())) {
-//                throw new IllegalArgumentException("EXPIRED 상태인 예약은 취소할 수 없습니다.");
-//            }
-//            reservation.updateStatus("CANCELED");
-//        } else if ("EXPIRED".equals(status)) {
-//            if (!"PENDING".equals(reservation.getStatus())) {
-//                throw new IllegalArgumentException("PENDING 상태만 EXPIRED로 변경 가능합니다.");
-//            }
-//            reservation.updateStatus("EXPIRED");
-//        } else {
-//            throw new IllegalArgumentException("올바르지 않은 상태: " + status);
-//        }
-//    }
 
     // TODO: 7. 리팩토링
     @Transactional
     public Reservation updateReservationStatus(Long reservationId, ReservationStatus newStatus) {
-        // 기본 메서드 사용하여 Reservation 가져오기
         Reservation reservation = reservationRepository.getByIdOrThrow(reservationId);
-
-        // 상태 변경 처리
         reservation.updateStatus(newStatus);
-
-        // 로그 저장 (Transactional로 포함된 경우 수정 불필요)
         rentalLogService.save(new RentalLog(reservation,   newStatus+" 로 상태변경", "UPDATE"));
 
         return reservation; // void -> 변경된 예약 데이터 반환

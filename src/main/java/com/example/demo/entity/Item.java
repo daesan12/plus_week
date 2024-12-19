@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicInsert;
 @Entity
 @Getter
 @DynamicInsert
-// TODO: 6. Dynamic Insert
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +37,6 @@ public class Item {
 
     public Item() {}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+
 
 }
