@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.Reservation;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -10,9 +11,11 @@ import static com.example.demo.entity.QReservation.reservation;
 import static com.example.demo.entity.QUser.user;
 import static com.example.demo.entity.QItem.item;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class ReservationRepositoryCustomImpl implements ReservationRepositoryCustom {
-
+    ReservationRepositoryCustomImpl(EntityManager em) {
+        queryFactory=new JPAQueryFactory(em);
+    }
     private final JPAQueryFactory queryFactory;
 
     @Override
